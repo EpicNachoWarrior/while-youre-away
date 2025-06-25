@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fun Zone</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- SIDEBAR START -->
+  <div id="emo-sidebar">
+    <button onclick="window.location.href='menu.html'">🏠 Menu</button>
+    <button onclick="window.location.href='day1.html'">📅 Day 1</button>
+    <button onclick="window.location.href='day2.html'">📅 Day 2</button>
+    <button onclick="window.location.href='day3.html'">📅 Day 3</button>
+    <button onclick="window.location.href='day4.html'">📅 Day 4</button>
+    <button onclick="window.location.href='portal.html'">🎮 Fun Zone</button>
+    <button onclick="window.location.href='player.html'">🎧 Music Vault</button>
+  </div>
+
+  <style>
+    #emo-sidebar {
+      position: fixed;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.85);
+      border-right: 2px solid hotpink;
+      padding: 1rem 0.5rem;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      box-shadow: 2px 0 10px #ff3c78;
+    }
+
+    #emo-sidebar button {
+      background: #9d00ff;
+      color: white;
+      font-family: 'VT323', monospace;
+      border: none;
+      padding: 0.5rem;
+      cursor: pointer;
+      font-size: 1rem;
+      width: 120px;
+      text-align: left;
+    }
+
+    #emo-sidebar button:hover {
+      background: #ff3c78;
+    }
+  </style>
+  <!-- SIDEBAR END -->
+
+
+  <div style="margin-top: 3rem;">
+    <h1>🎮 Fun Zone</h1>
+    <p>extra toyz :p</p>
+
+    <h2>🎤 Random Emo Lyric</h2>
+    <button onclick="giveLyric()">Hit me</button>
+    <p id="emo-lyric" style="margin-top:1rem;"></p>
+  </div>
+
+  <script>
+    function giveLyric() {
+      const lyrics = [
+        `"So long and goodnight..." — Helena`,
+        `"I'm not okay... I promise." — I'm Not Okay`,
+        `"I am not afraid to keep on living." — Famous Last Words`,
+        `"When I was a young boy..." — Welcome to the Black Parade`,
+        `"You're just a sad song with nothing to say." — Disenchanted`,
+        `"We could be perfect one last night." — Our Lady of Sorrows`,
+        `"You're never coming home." — The Ghost of You`
+      ];
+      const pick = lyrics[Math.floor(Math.random() * lyrics.length)];
+      document.getElementById("emo-lyric").textContent = pick;
+    }
+  </script>
+
+  <div style="margin-top: 2rem;">
+    <h2>🎱 Ask the angry 8-Ball</h2>
+    <button onclick="eightBall()">Ask</button>
+    <p id="eightball-response" style="font-style:italic; margin-top:1rem;"></p>
+  </div>
+
+  <script>
+    function eightBall() {
+      const responses = [
+        "Eat graham crackers.",
+        "Cry about it.",
+        "Put on Phineas and Ferb",
+        "Avoid eye contact.",
+        "Text them first (or don’t).",
+        "Write poetry about it.",
+        "Rewatch old MCR interviews.",
+        "They don’t deserve you.",
+        "Reopen your Tumblr.",
+        "Fart a lil.",
+        "Smoke a mango."
+      ];
+      const result = responses[Math.floor(Math.random() * responses.length)];
+      document.getElementById("eightball-response").textContent = result;
+    }
+  </script>
+
+  <hr style="margin: 2rem 0; border-color: hotpink;">
+
+  <!-- Snake Game -->
+  <canvas id="snake" width="300" height="300"></canvas>
+  <div style="margin: 1rem 0;">
+    <button id="start-btn">▶️ Start Snake</button>
+    <button id="restart-btn" style="display:none;">🔄 Restart Snake</button>
+  </div>
+
+  <div id="mobile-controls" style="display: flex; flex-direction: column; align-items: center; margin-top: 1rem;">
+    <button onclick="setDirection('UP')">⬆️</button>
+    <div style="display: flex; gap: 1rem;">
+      <button onclick="setDirection('LEFT')">⬅️</button>
+      <button onclick="setDirection('DOWN')">⬇️</button>
+      <button onclick="setDirection('RIGHT')">➡️</button>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('snake');
+    const ctx = canvas.getContext('2d');
+    const box = 20;
+    let snake, food, direction, game;
+
+    function initGame() {
+      snake = [{ x: 5 * box, y: 5 * box }];
+      direction = 'RIGHT';
+      food = {
+        x: Math.floor(Math.random() * 15) * box,
+        y: Math.floor(Math.random() * 15) * box
+      };
+    }
+
+    function draw() {
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, 300, 300);
+
+      for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = i === 0 ? '#ff3c78' : 'hotpink';
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+      }
+
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(food.x, food.y, box, box);
+
+      let head = { x: snake[0].x, y: snake[0].y };
+      if (direction === 'LEFT') head.x -= box;
+      if (direction === 'RIGHT') head.x += box;
+      if (direction === 'UP') head.y -= box;
+      if (direction === 'DOWN') head.y += box;
+
+      if (
+        head.x < 0 || head.x >= 300 || head.y < 0 || head.y >= 300 ||
+        snake.some(segment => segment.x === head.x && segment.y === head.y)
+      ) {
+        clearInterval(game);
+        alert("Game Over.");
+        document.getElementById('restart-btn').style.display = 'inline';
+        return;
+      }
+
+      snake.unshift(head);
+
+      if (head.x === food.x && head.y === food.y) {
+        food = {
+          x: Math.floor(Math.random() * 15) * box,
+          y: Math.floor(Math.random() * 15) * box
+        };
+      } else {
+        snake.pop();
+      }
+    }
+
+    function setDirection(newDir) {
+      const opposite = {
+        'LEFT': 'RIGHT',
+        'RIGHT': 'LEFT',
+        'UP': 'DOWN',
+        'DOWN': 'UP'
+      };
+      if (newDir !== opposite[direction]) direction = newDir;
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') setDirection('LEFT');
+      else if (e.key === 'ArrowUp') setDirection('UP');
+      else if (e.key === 'ArrowRight') setDirection('RIGHT');
+      else if (e.key === 'ArrowDown') setDirection('DOWN');
+    });
+
+    document.getElementById('start-btn').addEventListener('click', () => {
+      initGame();
+      clearInterval(game);
+      game = setInterval(draw, 160);
+      document.getElementById('restart-btn').style.display = 'inline';
+      document.getElementById('start-btn').style.display = 'none';
+    });
+
+    document.getElementById('restart-btn').addEventListener('click', () => {
+      initGame();
+      clearInterval(game);
+      game = setInterval(draw, 160);
+    });
+  </script>
+</body>
+</html>
