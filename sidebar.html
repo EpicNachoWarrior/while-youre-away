@@ -1,0 +1,41 @@
+<!-- sidebar.html -->
+<div id="emo-sidebar">
+  <button onclick="window.location.href='menu.html'">🏠 Menu</button>
+  <button onclick="window.location.href='day1.html'">📅 Day 1</button>
+  <button onclick="window.location.href='day2.html'">📅 Day 2</button>
+  <button onclick="window.location.href='day3.html'">📅 Day 3</button>
+  <button onclick="window.location.href='day4.html'">📅 Day 4</button>
+  <button onclick="window.location.href='portal.html'">🎮 Fun Zone</button>
+</div>
+
+<style>
+  #emo-sidebar {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.75);
+    border-right: 2px solid hotpink;
+    padding: 1rem 0.5rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-shadow: 2px 0 10px #ff3c78;
+  }
+
+  #emo-sidebar button {
+    background: #9d00ff;
+    color: white;
+    font-family: 'VT323', monospace;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s ease;
+  }
+
+  #emo-sidebar button:hover {
+    background: #ff3c78;
+  }
+</style>
